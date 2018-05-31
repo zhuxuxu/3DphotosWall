@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			#imgwrap{width: 880px;height: 440px;margin: 50px auto;perspective: 880px;}
+			#imgwrap img{width:88px;height:88px;float: left;}
+			#btn{width: 100px;text-align: center;font: 16px/40px "微软雅黑";color: white;padding: 0 20px;
+			margin:0 auto;border-radius:5px;background: rgb(0,100,0);box-shadow: 2px 2px 5px rgba(0,0,0,0.5);cursor: pointer;}
+			/*box-shadow(阴影): 2px(x) 2px(y) 5px(大小) rgba(0,0,0,0.5);*/
+		</style>
+		<script type="text/javascript">
+			/*
+			 * 运动的步骤
+			 * 1：闪的效果（瞬间宽高都变为0，css3属性scal：缩小，随机）
+			 * 2：图片从小变到大，同时透明度从1变到0（必须是上一步效果走完了他才会走）
+			 * 3：图片旋转，同时透明度从0变到1 有层次感（位移translate）（当所有图片的透明度变为0的时候，才会走这一步）
+			 */
+			window.onload=function(){
+				var btn=document.getElementById('btn');
+				var imgs=document.querySelectorAll('img');
+				var on=true;		//这个变量决定用户是否可以再次点击(true代表可以点，false代表不可以点)
+//				给btn添加点击事件
+				btn.onclick=function(){
+					if(!on){
+						return;
+					}
+					on=false;
+					var endNum=0;		//运动完成的图片数量
+					var allEnd=0;		//用来判断所有的图片是否都运动完了
+					for(var i=0;i<imgs.length;i++){
+						(function(i){
+							setTimeout(function(){
+								montion(imgs[i],'10ms',function(){
+									this.style.transform="scale(0)";	//缩放到0
+								},function(){
+									//第二个运动要在这里写
+									montion(this,'1s',function(){
+										this.style.transform="scale(1)";
+										this.style.opacity=0;
+									},function(){
+										endNum++;	//只要有一张图走完了，就让他加个1
+										if(endNum==imgs.length){
+											toBig();
+										}
+									});
+								});
+							},Math.random()*1000);				//500毫秒
+						})(i)
+					}
+					function toBig(){
+//						这个函数用来做第三个效果
+						/*
+						 * 坐标轴
+						 * x轴（平行地面）
+						 * y轴（垂直地面）
+						 * x轴（垂直屏幕）
+						 */
+						for(var i=0;i<imgs.length;i++){
+							imgs[i].style.transition="";	
+							//想要一个物体有css3中的一些变化，那就需要给他一个初始值
+							imgs[i].style.transform='rotateY(0deg)translateZ(-'+Math.random()*500+'px)';
+							//用这种方式去写是因为想要在循环里找i的值
+							(function(i){
+								setTimeout(function(){
+									montion(imgs[i],'2s',function(){
+										this.style.opacity=1;
+										this.style.transform='rotateY(-360deg) translateZ(0)';
+									},function(){
+										allEnd++;
+										if(allEnd==imgs.length){
+											//这个条件成立，说明所有图片都运动完了，可以让用户再次点击了
+											on=true;		//当所有运动完了以后才可以点
+										}
+									});
+								},Math.random()*1000);
+							})(i);
+						}
+					};
+				};
+//						运动函数(运动的对象/运动的时间/运动的属性函数/运动完成后要做的事情)
+						function montion(obj,time,doFn,callBack){
+							obj.style.transition=time;
+							doFn.call(obj);		//调用函数,并把this的指向给obj
+							var called=false;	//解决transitionend调用多次的bug
+							obj.addEventListener('transitionend',function(){
+								if(!called){	
+									callBack&&callBack.call(obj);
+									called=true;
+								}
+							},false);
+						}
+			};
+		</script>
+	</head>
+	<body>
+		<div id="imgwrap">
+			<img src="img/1.jpg" alt="" />
+			<img src="img/2.jpg" alt="" />
+			<img src="img/3.jpg" alt="" />
+			<img src="img/4.jpg" alt="" />
+			<img src="img/5.jpg" alt="" />
+			<img src="img/6.jpg" alt="" />
+			<img src="img/7.jpg" alt="" />
+			<img src="img/8.jpg" alt="" />
+			<img src="img/9.jpg" alt="" />
+			<img src="img/10.jpg" alt="" />
+			<img src="img/11.jpg" alt="" />
+			<img src="img/12.jpg" alt="" />
+			<img src="img/13.jpg" alt="" />
+			<img src="img/14.jpg" alt="" />
+			<img src="img/15.jpg" alt="" />
+			<img src="img/16.jpg" alt="" />
+			<img src="img/17.jpg" alt="" />
+			<img src="img/18.jpg" alt="" />
+			<img src="img/19.jpg" alt="" />
+			<img src="img/20.jpg" alt="" />
+			<img src="img/21.jpg" alt="" />
+			<img src="img/22.jpg" alt="" />
+			<img src="img/23.jpg" alt="" />
+			<img src="img/24.jpg" alt="" />
+			<img src="img/25.jpg" alt="" />
+			<img src="img/26.jpg" alt="" />
+			<img src="img/27.jpg" alt="" />
+			<img src="img/28.jpg" alt="" />
+			<img src="img/29.jpg" alt="" />
+			<img src="img/30.jpg" alt="" />
+			<img src="img/31.jpg" alt="" />
+			<img src="img/32.jpg" alt="" />
+			<img src="img/33.jpg" alt="" />
+			<img src="img/34.jpg" alt="" />
+			<img src="img/35.jpg" alt="" />
+			<img src="img/36.jpg" alt="" />
+			<img src="img/37.jpg" alt="" />
+			<img src="img/38.jpg" alt="" />
+			<img src="img/39.jpg" alt="" />
+			<img src="img/40.jpg" alt="" />
+			<img src="img/41.jpg" alt="" />
+			<img src="img/42.jpg" alt="" />
+			<img src="img/43.jpg" alt="" />
+			<img src="img/44.jpg" alt="" />
+			<img src="img/45.jpg" alt="" />
+			<img src="img/46.jpg" alt="" />
+			<img src="img/47.jpg" alt="" />
+			<img src="img/48.jpg" alt="" />
+			<img src="img/49.jpg" alt="" />
+			<img src="img/50.jpg" alt="" />
+		</div>
+		<div id="btn">
+			点击查看效果
+		</div>
+	</body>
+</html>
